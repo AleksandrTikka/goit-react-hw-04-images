@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { IoIosSearch } from 'react-icons/io';
+import { toast } from 'react-toastify';
 
 export default class Searchbar extends Component {
   state = {
@@ -7,17 +8,20 @@ export default class Searchbar extends Component {
   };
 
   handleInputChange = e => {
-    console.log(e.crrentTarget);
     this.setState({ input: e.currentTarget.value.toLowerCase() });
   };
+
+  reset() {
+    this.setState({ input: '' });
+  }
+
   handleSabmit = e => {
     e.preventDefault();
-
     this.state.input.trim() === ''
-      ? alert('Search input is empty... Please enter a new word')
-      : this.props.onSubmit(this.state.input);
+      ? toast.error('Search input is empty... Please enter a new word')
+      : this.props.getSearchQuery(this.state.input);
 
-    // this.setState({ input: e.crrentTarget.value });
+    this.reset();
   };
 
   render() {
