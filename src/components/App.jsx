@@ -59,8 +59,8 @@ export default class App extends Component {
           }));
         }
       } catch (error) {
-        // console.log(error.message);
         this.setState({ error: error, status: 'rejected' });
+        console.error(error.message);
       }
     }
   }

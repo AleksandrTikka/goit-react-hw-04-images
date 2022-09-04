@@ -1,4 +1,4 @@
-const Message = children => {
+const Message = ({ children }) => {
   return <div>{children}</div>;
 };
 export default Message;
