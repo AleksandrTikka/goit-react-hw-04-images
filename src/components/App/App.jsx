@@ -1,13 +1,14 @@
 import { Component } from 'react';
-import Searchbar from './Searchbar';
-import ImageGallery from './ImageGallery';
-import Loader from './Loader';
-import Button from './Button';
-import Message from './Message';
+import Searchbar from '../Searchbar';
+import ImageGallery from '../ImageGallery';
+import Loader from '../Loader';
+import Button from '../Button';
+import Message from '../Message';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchImages } from 'services/api';
+import css from 'components/App';
 
 export default class App extends Component {
   state = {
@@ -77,7 +78,7 @@ export default class App extends Component {
   render() {
     const { page, totalPage, status, error, hits } = this.state;
     return (
-      <div>
+      <div className={css.app}>
         <Searchbar getSearchQuery={this.handleSearchQuery} />
         {status === 'resolved' && <ImageGallery images={hits} />}
         {status === 'pending' && <Loader />}

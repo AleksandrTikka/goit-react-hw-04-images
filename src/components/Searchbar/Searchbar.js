@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { IoIosSearch } from 'react-icons/io';
 import { toast } from 'react-toastify';
+import css from './Searchbar.module.css';
 
 export default class Searchbar extends Component {
   state = {
@@ -26,15 +27,15 @@ export default class Searchbar extends Component {
 
   render() {
     return (
-      <header className="searchbar">
-        <form className="form" onSubmit={this.handleSabmit}>
-          <button type="submit" className="button">
-            <IoIosSearch />
-            <span className="button-label">Search</span>
+      <header className={css.searchbar}>
+        <form className={css.searchForm} onSubmit={this.handleSabmit}>
+          <button type="submit" className={css.searchForm__button}>
+            <IoIosSearch size={24} />
+            {/* <span className="button-label">Search</span> */}
           </button>
 
           <input
-            className="input"
+            className={css.searchForm__input}
             name="input"
             value={this.state.input}
             onChange={this.handleInputChange}
