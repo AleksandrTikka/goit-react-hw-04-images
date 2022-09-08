@@ -22,7 +22,7 @@ export default class Modal extends Component {
     }
   };
 
-  handleBackdrop = e => {
+  handleBackdropClick = e => {
     console.log(e.target);
     console.log(e.currentTarget);
     if (e.target === e.currentTarget) {
@@ -32,7 +32,7 @@ export default class Modal extends Component {
   };
   render() {
     return createPortal(
-      <div className={css.overlay} onClick={this.handleBackdrop.Click}>
+      <div className={css.overlay} onClick={this.handleBackdropClick}>
         <div className={css.modal}>
           {/* <img src="" alt="" /> */}
           {this.props.children}

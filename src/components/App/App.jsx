@@ -18,7 +18,6 @@ export default class App extends Component {
     status: 'idle',
     hits: [],
     error: null,
-    onModal: false,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -68,21 +67,36 @@ export default class App extends Component {
   handleSearchQuery = input => {
     this.setState({
       page: 1,
-      totalPage: null,
+      // totalPage: null,
       hits: [],
       query: input.trim(),
       status: 'idle',
     });
   };
 
+  handleMoreClick = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
   render() {
-    const { page, totalPage, status, error, hits } = this.state;
+    const {
+      // page, totalPage,
+      status,
+      error,
+      hits,
+    } = this.state;
     return (
       <div className={css.app}>
         <Searchbar getSearchQuery={this.handleSearchQuery} />
         {status === 'resolved' && <ImageGallery images={hits} />}
         {status === 'pending' && <Loader />}
-        {status === 'resolved' && totalPage > page && <Button />}
+        {
+          status === 'resolved' && (
+            <Button onLoadMore={this.handleMoreClick}>Load more</Button>
+          )
+          // && totalPage > page
+        }
+
         {status === 'rejected' && <Message>{error.message}</Message>}
 
         <ToastContainer position="top-center" autoClose={3000} />
