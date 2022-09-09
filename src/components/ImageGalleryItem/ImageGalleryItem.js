@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Modal from 'components/Modal';
 import css from './ImageGalleryItem.module.css';
+import PropTypes from 'prop-types';
 
 export default class ImageGalleryItem extends Component {
   state = {
@@ -30,3 +31,11 @@ export default class ImageGalleryItem extends Component {
     );
   }
 }
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }),
+};

@@ -9,7 +9,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchImages } from 'services/api';
 import css from './App.module.css';
-import PropTypes from 'prop-types';
 
 export default class App extends Component {
   state = {
@@ -89,7 +88,7 @@ export default class App extends Component {
     return (
       <div className={css.app}>
         <Searchbar getSearchQuery={this.handleSearchQuery} />
-        {status === 'resolved' && <ImageGallery images={hits} />}
+        {hits.length > 0 && <ImageGallery images={hits} />}
         {status === 'pending' && <Loader />}
         {
           status === 'resolved' && (

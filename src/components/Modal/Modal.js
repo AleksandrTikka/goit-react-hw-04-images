@@ -9,8 +9,6 @@ export default class Modal extends Component {
     window.addEventListener('keydown', this.handleKeyEscDown);
   }
 
-  componentDidUpdate() {}
-
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyEscDown);
   }
@@ -18,16 +16,12 @@ export default class Modal extends Component {
   handleKeyEscDown = e => {
     if (e.code === 'Escape') {
       this.props.onClose();
-      console.log('esc был нажат');
     }
   };
 
   handleBackdropClick = e => {
-    console.log(e.target);
-    console.log(e.currentTarget);
     if (e.target === e.currentTarget) {
       this.props.onClose();
-      console.log('клик в бекдроп');
     }
   };
   render() {
