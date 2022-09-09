@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchImages } from 'services/api';
 import css from './App.module.css';
+import PropTypes from 'prop-types';
 
 export default class App extends Component {
   state = {
@@ -42,10 +43,10 @@ export default class App extends Component {
         }
 
         // if (images.totalHits > 0) {
+        this.setState({ status: 'resolved' });
         this.setState(prevState => ({
           hits: [...prevState.hits, ...hits],
         }));
-        this.setState({ status: 'resolved' });
 
         this.setState({ totalPage: Math.ceil(totalHits / 12) });
 
