@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
 import Loader from '../Loader';
@@ -10,97 +10,76 @@ import 'react-toastify/dist/ReactToastify.css';
 import { fetchImages } from 'services/api';
 import css from './App.module.css';
 
-export default class App extends Component {
-  state = {
-    page: 1,
-    totalPage: null,
-    query: '',
-    status: 'idle',
-    hits: [],
-    error: null,
-  };
+export default function App() {
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(null);
+  const [query, setQuery] = useState('');
+  const [hits, setHits] = useState([]);
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState(null);
 
-  async componentDidUpdate(prevProps, prevState) {
-    const prevQuery = prevState.query;
-    const newQuery = this.state.query;
-    const prevPage = prevState.page;
-    const newPage = this.state.page;
-    if (newQuery !== prevQuery || newPage !== prevPage) {
+  useEffect(() => {
+    if (query === '') {
+      return;
+    }
+    (async function getImages() {
       try {
-        this.setState({ status: 'pending' });
-
-        const images = await fetchImages(newQuery, newPage);
+        setStatus('pending');
+        const images = await fetchImages(page, query);
         const { total, totalHits, hits } = images;
         if (total === 0) {
           toast.error(
             'Sorry, there are no images matching your search query. Please try again.'
           );
-          this.setState({
-            status: 'idle',
-          });
+          setStatus('idle');
           return;
         }
 
         // if (images.totalHits > 0) {
-        this.setState({ status: 'resolved' });
-        this.setState(prevState => ({
-          hits: [...prevState.hits, ...hits],
-        }));
+        setStatus('resolved');
+        setHits(prevHits => [...prevHits, ...hits]);
+        // const totalPage = Math.ceil(totalHits / 12);
+        setTotalPage(Math.ceil(totalHits / 12));
 
-        this.setState({ totalPage: Math.ceil(totalHits / 12) });
-
-        const { totalPage, page } = this.state;
         if (totalPage === page) {
           toast.error(
             "We're sorry, but you've reached the end of search results."
           );
         }
-
-        // }
       } catch (error) {
-        this.setState({ status: 'rejected', error: error });
+        setStatus('rejected');
+        setError(error);
         console.log(error);
       }
-    }
-  }
+    })();
+  }, [page, query, totalPage]);
 
-  handleSearchQuery = input => {
-    this.setState({
-      page: 1,
-      // totalPage: null,
-      hits: [],
-      query: input.trim(),
-      status: 'idle',
-    });
+  const handleSearchQuery = input => {
+    setPage(1);
+    setHits([]);
+    setQuery(input.trim());
+    setStatus('idle');
   };
 
-  handleMoreClick = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+  const handleMoreClick = () => {
+    setPage(prevPage => prevPage + 1);
   };
 
-  render() {
-    const {
-      // page, totalPage,
-      status,
-      error,
-      hits,
-    } = this.state;
-    return (
-      <div className={css.app}>
-        <Searchbar getSearchQuery={this.handleSearchQuery} />
-        {hits.length > 0 && <ImageGallery images={hits} />}
-        {status === 'pending' && <Loader />}
-        {
-          status === 'resolved' && (
-            <Button onLoadMore={this.handleMoreClick}>Load more</Button>
-          )
-          // && totalPage > page
-        }
+  return (
+    <div className={css.app}>
+      <Searchbar getSearchQuery={handleSearchQuery} />
+      {hits.length > 0 && <ImageGallery images={hits} />}
+      {status === 'pending' && <Loader />}
+      {
+        status === 'resolved' && (
+          <Button onLoadMore={handleMoreClick}>Load more</Button>
+        )
+        // && totalPage > page
+      }
 
-        {status === 'rejected' && <Message>{error.message}</Message>}
+      {status === 'rejected' && <Message>{error.message}</Message>}
 
-        <ToastContainer position="top-center" autoClose={3000} />
-      </div>
-    );
-  }
+      <ToastContainer position="top-center" autoClose={3000} />
+    </div>
+  );
 }
