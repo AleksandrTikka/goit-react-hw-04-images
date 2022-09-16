@@ -25,7 +25,7 @@ export default function App() {
     (async function getImages() {
       try {
         setStatus('pending');
-        const images = await fetchImages(page, query);
+        const images = await fetchImages(query, page);
         const { total, totalHits, hits } = images;
         if (total === 0) {
           toast.error(
@@ -34,9 +34,8 @@ export default function App() {
           setStatus('idle');
           return;
         }
-
-        setStatus('resolved');
         setHits(prevHits => [...prevHits, ...hits]);
+        setStatus('resolved');
 
         setTotalPage(Math.ceil(totalHits / 12));
 
@@ -46,8 +45,8 @@ export default function App() {
           );
         }
       } catch (error) {
-        setStatus('rejected');
         setError(error);
+        setStatus('rejected');
         console.log(error);
       }
     })();
