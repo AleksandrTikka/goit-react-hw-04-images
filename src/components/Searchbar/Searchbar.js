@@ -11,21 +11,20 @@ export default function Searchbar({ getSearchQuery }) {
     setInput(e.currentTarget.value.toLowerCase());
   };
 
-  const handleSabmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
     input.trim() === ''
       ? toast.error('Search input is empty... Please enter a new word')
       : getSearchQuery(input);
 
-    e.currentTarget.reset();
+    setInput('');
   };
 
   return (
     <header className={css.searchbar}>
-      <form className={css.searchForm} onSubmit={handleSabmit}>
+      <form className={css.searchForm} onSubmit={handleSubmit}>
         <button type="submit" className={css.searchForm__button}>
           <IoIosSearch size={24} />
-          {/* <span className="button-label">Search</span> */}
         </button>
 
         <input
@@ -44,5 +43,5 @@ export default function Searchbar({ getSearchQuery }) {
 }
 
 Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  getSearchQuery: PropTypes.func.isRequired,
 };

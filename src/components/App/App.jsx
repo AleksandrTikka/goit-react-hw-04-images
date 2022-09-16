@@ -35,10 +35,9 @@ export default function App() {
           return;
         }
 
-        // if (images.totalHits > 0) {
         setStatus('resolved');
         setHits(prevHits => [...prevHits, ...hits]);
-        // const totalPage = Math.ceil(totalHits / 12);
+
         setTotalPage(Math.ceil(totalHits / 12));
 
         if (totalPage === page) {
