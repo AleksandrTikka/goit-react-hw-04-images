@@ -22,7 +22,7 @@ export default function App() {
     if (query === '') {
       return;
     }
-    (async function getImages() {
+    async function getImages() {
       try {
         setStatus('pending');
         const images = await fetchImages(query, page);
@@ -45,11 +45,12 @@ export default function App() {
           );
         }
       } catch (error) {
-        setError(error);
+        setError(error.message);
         setStatus('rejected');
         console.log(error);
       }
-    })();
+    }
+    getImages();
   }, [page, query, totalPage]);
 
   const handleSearchQuery = input => {

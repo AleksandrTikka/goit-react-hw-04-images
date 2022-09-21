@@ -8,7 +8,7 @@ export default function Searchbar({ getSearchQuery }) {
   const [input, setInput] = useState('');
 
   const handleInputChange = e => {
-    setInput(e.currentTarget.value.toLowerCase());
+    setInput(e.target.value.toLowerCase());
   };
 
   const handleSubmit = e => {
